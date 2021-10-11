@@ -10,9 +10,6 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            Post.hasOne(sequelize.models.User, {
-                foreignKey: 'id'
-            })
             // define association here
         }
     };
@@ -21,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             references: {
                 model: {
-                    tableName: 'Users',
+                    tableName: 'User',
                     onDelete: true
                 },
                 key: 'id',
@@ -31,8 +28,10 @@ module.exports = (sequelize, DataTypes) => {
         body: DataTypes.TEXT
     }, {
         sequelize,
-        modelName: 'Posts',
+        modelName: 'Post',
     });
-
+    Post.associate = (models) => {
+        Post.belongsTo(models.User, { foreignKey: 'author_id', as: 'author' })
+    }
     return Post;
 };

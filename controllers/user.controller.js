@@ -29,9 +29,9 @@ class UserController {
             },
             include: [
                 {
-                    model: Post
+                    model: Post,
+                    as: 'posts'
                 }
-
             ]
         }).then((user) => res.json(user))
     }

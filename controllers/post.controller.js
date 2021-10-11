@@ -40,7 +40,8 @@ class PostController {
         res.send(await Post.findAll({
             include: [
                 {
-                    model: User
+                    model: User,
+                    as: 'author'
                 }
             ]
         }))
