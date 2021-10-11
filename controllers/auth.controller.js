@@ -1,4 +1,4 @@
-const db = require('../models/index.js'),
+const {User} = require('../models/index.js').sequelize.models,
     jwt = require('jsonwebtoken'),
     tokenKey = '1a2b-3c4d-5e6f-7g8h',
     {validationResult} = require('express-validator');
@@ -6,7 +6,7 @@ const db = require('../models/index.js'),
 
 class AuthController {
     async login(req, res) {
-        const users = await db.sequelize.models.User.findAll();
+        const users = await User.findAll();
         for (let user of users) {
             if (
                 req.body.username === user.username &&
@@ -19,7 +19,7 @@ class AuthController {
                 })
             }
         }
-        res.status(401).json({error: 'Unauthorized.'})
+        res.status(401).json({message: 'Unauthorized.'})
     }
 
     async register(req, res) {
@@ -27,7 +27,7 @@ class AuthController {
             res.status(400).json({errors: validationResult(req).array()});
         }
         const {username, password} = req.body;
-        await db.sequelize.models.User.create({username, password}).then((user) => res.json({
+        await User.create({username, password}).then((user) => res.json({
             user,
             message: 'Created.'
         }));
