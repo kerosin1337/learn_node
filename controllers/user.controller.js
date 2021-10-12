@@ -1,5 +1,5 @@
 const {validationResult} = require('express-validator'),
-    {User, Post} = require('../models/index.js').sequelize.models;
+    {User, Post, Role, UserRole} = require('../models/index.js').sequelize.models;
 
 class UserController {
     // async createUser(req, res) {
@@ -31,6 +31,10 @@ class UserController {
                 {
                     model: Post,
                     as: 'posts'
+                },
+                {
+                    model: Role,
+                    as: 'roles'
                 }
             ]
         }).then((user) => res.json(user))

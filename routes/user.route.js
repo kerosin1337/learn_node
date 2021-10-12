@@ -52,7 +52,6 @@ const checkId = async (req, res, next) => {
 };
 router.get('/:id', auth, checkId, userController.getUser.bind(userController));
 router.get('/', auth, userController.getUsers.bind(userController));
-// router.post('/user', userController.createUser);
 router.put('/:id', auth, checkId,
     body('username')
         .notEmpty()

@@ -3,7 +3,7 @@ const {
     Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Post extends Model {
+    class UserRole extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
             // define association here
         }
     };
-    Post.init({
-        author_id: {
+    UserRole.init({
+        user_id: {
             type: DataTypes.INTEGER,
             references: {
                 model: {
@@ -24,17 +24,29 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: true
             },
         },
-        title: DataTypes.STRING,
-        body: DataTypes.TEXT
+        role_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: {
+                    tableName: 'Role',
+                    key: 'id',
+                },
+                onDelete: 'CASCADE'
+            },
+        },
     }, {
         sequelize,
-        modelName: 'Post',
+        modelName: 'UserRole',
     });
-    Post.associate = (models) => {
-        Post.belongsTo(models.User, {
-            foreignKey: 'author_id',
-            as: 'author'
+    UserRole.associate = (models) => {
+        UserRole.belongsTo(models.User, {
+            foreignKey: 'user_id',
+            as: 'user'
+        })
+        UserRole.belongsTo(models.Role, {
+            foreignKey: 'role_id',
+            as: 'role',
         })
     }
-    return Post;
+    return UserRole;
 };
