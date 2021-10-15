@@ -11,26 +11,28 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            Role.belongsToMany(models.User, {
+                foreignKey: 'role_id',
+                through: models.UserRole,
+                as: 'role',
+            });
+            Role.belongsToMany(models.User, {
+                through: models.UserRole,
+                as: 'user',
+                foreignKey: 'role_id',
+                otherKey: 'user_id'
+            })
         }
     };
     Role.init({
-        name: DataTypes.STRING
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        }
     }, {
         sequelize,
         modelName: 'Role',
     });
-    Role.associate((models) => {
-        Role.belongsToMany(models.User, {
-            foreignKey: 'role_id',
-            through: models.UserRole,
-            as: 'users',
-        });
-        Role.belongsToMany(models.User, {
-            through: models.UserRole,
-            as: 'users',
-            foreignKey: 'role_id',
-            otherKey: 'user_id'
-        })
-    })
     return Role;
 };
