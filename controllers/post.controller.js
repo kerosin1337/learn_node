@@ -1,8 +1,6 @@
 const {Post, User} = require('../models/index.js').sequelize.models,
     jwt = require('jsonwebtoken'),
-    tokenKey = '1a2b-3c4d-5e6f-7g8h',
-    {validationResult} = require('express-validator');
-
+    tokenKey = '1a2b-3c4d-5e6f-7g8h';
 
 class PostController {
     async getPost(req, res) {

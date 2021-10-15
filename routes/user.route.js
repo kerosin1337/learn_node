@@ -4,7 +4,6 @@ const Router = require('express'),
     userController = require('../controllers/user.controller.js'),
     tokenKey = '1a2b-3c4d-5e6f-7g8h',
     {User} = require("../models/index.js").sequelize.models;
-const {body, check} = require("express-validator");
 
 const auth = async (req, res, next) => {
     if (req.headers.authorization) {
@@ -53,17 +52,6 @@ const checkId = async (req, res, next) => {
 router.get('/:id', auth, checkId, userController.getUser.bind(userController));
 router.get('/', auth, userController.getUsers.bind(userController));
 router.put('/:id', auth, checkId,
-    body('username')
-        .notEmpty()
-        .custom(async (value) => {
-            return await User.findOne({where: {username: value}}).then((user) => {
-                if (user) {
-                    return Promise.reject('Username already in user')
-                }
-            })
-        }),
-    body('password')
-        .isLength({min: 6, max: 20}).withMessage('6 to 20 characters'),
     userController.updateUser.bind(userController));
 router.delete('/:id', auth, checkId, userController.deleteUser.bind(userController));
 

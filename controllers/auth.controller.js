@@ -1,8 +1,6 @@
 const {User} = require('../models/index.js').sequelize.models,
     jwt = require('jsonwebtoken'),
-    tokenKey = '1a2b-3c4d-5e6f-7g8h',
-    {validationResult} = require('express-validator');
-
+    tokenKey = '1a2b-3c4d-5e6f-7g8h';
 
 class AuthController {
     async login(req, res) {
@@ -36,9 +34,6 @@ class AuthController {
     }
 
     async register(req, res) {
-        if (!validationResult(req).isEmpty()) {
-            res.status(400).json({errors: validationResult(req).array()});
-        }
         const {username, password} = req.body;
         await User.create({username, password}).then((user) => res.json({
             user,
